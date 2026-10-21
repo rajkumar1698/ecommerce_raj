@@ -1,7 +1,7 @@
 view: events {
   sql_table_name: demo_db.events ;;
   drill_fields: [id]
-
+#
   dimension: id {
     primary_key: yes
     type: number
