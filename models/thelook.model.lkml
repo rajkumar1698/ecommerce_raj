@@ -153,6 +153,9 @@ explore: map_layer {}
 explore: marketing_campaigns {}
 
 explore: orders {
+  always_filter:  {
+    filters:  [orders.status: "COMPLETED"]
+  }
   join: users {
     type: left_outer
     sql_on: ${orders.user_id} = ${users.id} ;;
@@ -161,6 +164,9 @@ explore: orders {
 }
 
 explore: order_items {
+  always_filter:  {
+    filters:  [orders.status: "CANCELLED"]
+  }
   join: orders {
     type: left_outer
     sql_on: ${order_items.order_id} = ${orders.id} ;;
