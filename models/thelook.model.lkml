@@ -10,18 +10,30 @@ datagroup: thelook_default_datagroup {
 
 persist_with: thelook_default_datagroup
 
+# --- Root-Level Agent Definition ---
+agent: my_test_agent {
+  description: "Test agent for reproducing CA UI bug"
+  instructions: "You are a test agent. Keep answers brief."
+  is_dashboard_agent: yes
+}
+
+# --- Root-Level Explores ---
 explore: billion_orders {
   join: orders {
     type: left_outer
     sql_on: ${billion_orders.order_id} = ${orders.id} ;;
     relationship: many_to_one
   }
-
   join: users {
     type: left_outer
     sql_on: ${orders.user_id} = ${users.id} ;;
     relationship: many_to_one
   }
+}
+
+# Define the minimal Explore at the root level with a 'from:' property
+explore: my_test_explore {
+  from: users  # Change 'users' to whichever base view this explore should use
 }
 
 explore: binary_test {}
@@ -153,8 +165,8 @@ explore: map_layer {}
 explore: marketing_campaigns {}
 
 explore: orders {
-  always_filter:  {
-    filters:  [orders.status: "COMPLETED"]
+  always_filter: {
+    filters: [orders.status: "COMPLETED"]
   }
   join: users {
     type: left_outer
@@ -164,8 +176,8 @@ explore: orders {
 }
 
 explore: order_items {
-  always_filter:  {
-    filters:  [orders.status: "CANCELLED"]
+  always_filter: {
+    filters: [orders.status: "CANCELLED"]
   }
   join: orders {
     type: left_outer
